@@ -1,0 +1,64 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: prometheus
+  name: prometheus
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    app: prometheus
+    deployment-config.name: prometheus
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: prometheus
+        deployment-config.name: prometheus
+    spec:
+      containers:
+      - image: prom/prometheus
+        imagePullPolicy: Always
+        name: prometheus
+        ports:
+        - containerPort: 9090
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /prometheus
+          name: prometheus-volume
+        - name: prometheus-config-volume
+          mountPath: /etc/prometheus/prometheus.yml
+          subPath: prometheus.yml
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: prometheus
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: prometheus-volume
+      - name: prometheus-config-volume
+        configMap:
+          name: prometheus
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - prometheus
+      from:
+        kind: ImageStreamTag
+        name: prometheus:latest
+    type: ImageChange

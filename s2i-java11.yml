@@ -1,0 +1,17 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: s2i-java11
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - from:
+      kind: DockerImage
+      name: docker.io/fabric8/s2i-java:latest-java11
+    generation: 2
+    importPolicy:
+      scheduled: true
+    name: latest
+    referencePolicy:
+      type: Source

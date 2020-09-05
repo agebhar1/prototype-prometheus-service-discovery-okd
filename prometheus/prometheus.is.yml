@@ -1,0 +1,17 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: prometheus
+  name: prometheus
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - from:
+      kind: DockerImage
+      name: prom/prometheus
+    importPolicy: {}
+    name: latest
+    referencePolicy:
+      type: Source

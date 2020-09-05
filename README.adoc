@@ -1,0 +1,22 @@
+# Service Discovery Demo for Prometheus on okd
+
+## Prerequisites
+
+Default Minishift installation.
+
+## Setup
+
+```bash
+$ oc apply -f s2i-java11.yml
+$ oc apply -f demo.yml
+$ oc apply -f prometheus
+$ oc start-build demo --from-dir=demo
+```
+
+image::README.adoc.d/images/prometheus-targets.png[Prometheus » Targets]
+
+## Links
+* Sebastian Daschner https://blog.sebastian-daschner.com/entries/prometheus-kubernetes-discovery[Prometheus Kubernetes Discovery] Blogpost
+* Prometheus https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config[Kubernetes SD Config]
+* Prometheus https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config[Relabel Config]
+* Kubernetes https://kubernetes.io/docs/reference/access-authn-authz/rbac/[Using RBAC Authorization]
