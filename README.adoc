@@ -17,7 +17,7 @@ image::README.adoc.d/images/prometheus-targets.png[Prometheus » Targets]
 
 ## Key Ideas
 
-Create a link:prometheus/prometheus.rbac.yml#L1-L4[service account] (`prometheus`) and link:prometheus/prometheus.rbac.yml#L19-L29[bind] a dedicated link:prometheus/prometheus.rbac.yml#L6-L17[role] (e.g. `podview`) which is only allowed to get, list and watch pods within the project. This service account must be used by the prometheus pod which is configured by the link:prometheus/prometheus.dc.yml#L46[deployment config] variable `spec.template.spec.serviceAccount`.
+Create a link:prometheus/prometheus.rbac.yml#L1-L4[service account] (`prometheus`) and link:prometheus/prometheus.rbac.yml#L19-L29[bind] a dedicated link:prometheus/prometheus.rbac.yml#L6-L17[role] (e.g. `podview`) which is only allowed to list pods within the project. This service account must be used by the prometheus pod which is configured by the link:prometheus/prometheus.dc.yml#L46[deployment config] variable `spec.template.spec.serviceAccount`.
 
 Since Spring Boots default Prometheus endpoint is http://host:8080/actuator/prometheus add a label to all pods (e.g. `prometheus/job_name`) with a specific value (e.g. `spring-boot`) to simplify link:prometheus/prometheus.cm.yml#L28-L47[configuration] of Prometheus dynamic scrape job(s).
 
