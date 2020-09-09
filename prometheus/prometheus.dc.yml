@@ -22,6 +22,9 @@ spec:
     type: Rolling
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
       labels:
         app: prometheus
         deployment-config.name: prometheus

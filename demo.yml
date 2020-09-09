@@ -58,10 +58,13 @@ spec:
     type: Rolling
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8080"
       labels:
         app: demo
         deployment-config.name: demo
-        prometheus/job_name: spring-boot
     spec:
       containers:
       - image: 172.30.1.1:5000/myproject/demo
