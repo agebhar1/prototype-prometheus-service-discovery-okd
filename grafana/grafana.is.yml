@@ -1,0 +1,17 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - from:
+      kind: DockerImage
+      name: grafana/grafana
+    importPolicy: {}
+    name: latest
+    referencePolicy:
+      type: Source

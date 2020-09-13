@@ -9,6 +9,7 @@ Default Minishift installation.
 ```bash
 $ oc apply -f s2i-java11.yml
 $ oc apply -f demo.yml
+$ oc apply -f grafana
 $ oc apply -f prometheus
 $ oc start-build demo --from-dir=demo
 ```

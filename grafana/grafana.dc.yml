@@ -1,0 +1,54 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    app: grafana
+    deployment-config.name: grafana
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+      labels:
+        app: grafana
+        deployment-config.name: grafana
+    spec:
+      containers:
+      - image: grafana/grafana
+        imagePullPolicy: Always
+        name: grafana
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - grafana
+      from:
+        kind: ImageStreamTag
+        name: grafana:latest
+    type: ImageChange
